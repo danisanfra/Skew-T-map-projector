@@ -1,3 +1,4 @@
+
 #  Skew-T map-projector - v0.2
  
 ## INDEX  
@@ -40,10 +41,13 @@ Last lines plot on a mercator projected map of Europe dots representing the loca
 
 ## 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
 In case you should find a bug inside this script and it appears to be blank, it should be in this form:  
-*maps_folder = ''  
+
+```
+maps_folder = ''  
 stationloc_folder = maps_folder + 'stations_loc.txt'  
 soundings_folder  = maps_folder + 'soundings\\'  
-url_folder        = 'file:///' + maps_folder + 'html\\'*  
+url_folder        = 'file:///' + maps_folder + 'html\\'  
+```
 
 ## 8. TO DO LIST:  
     - automatic data mining from wyoming university website (or other indication). This requires an automatic check for unavailable soundings that does not end in script's error stop.  
