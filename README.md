@@ -1,11 +1,11 @@
 #  Skew-T-map-projector - v0.2
  
-INDEX
-1- CONTENT OF FOLDER
-2- IDEA OF SCRIPT
-3- MISSING PACKAGES INSTALLATION
-5- SETTING FOLDER
-6- USE OF SCRIPT
+INDEX\n
+1- CONTENT OF FOLDER\n
+2- IDEA OF SCRIPT\n
+3- MISSING PACKAGES INSTALLATION\n
+5- SETTING FOLDER\n
+6- USE OF SCRIPT\n
 
 CONTENT OF FOLDER
 html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage.
