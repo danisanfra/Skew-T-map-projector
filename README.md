@@ -1,12 +1,13 @@
-#  Skew-T-map-projector - v0.2
+#  Skew-T map-projector - v0.2
  
 ## INDEX  
 ##### 1. CONTENT OF FOLDER  
 ##### 2. IDEA OF SCRIPT  
 ##### 3. MISSING PACKAGES INSTALLATION  
 ##### 5. SETTING FOLDER  
-##### 6. USE OF SCRIPT  
-##### 7. TO DO LIST
+##### 6. USE OF SCRIPT
+##### 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
+##### 8. TO DO LIST
 
 ## 1. CONTENT OF FOLDER  
 html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage.  
@@ -37,7 +38,14 @@ Next 'for' cycle opens the txt soundings' files and saves data into multidimensi
 
 Last lines plot on a mercator projected map of Europe dots representing the location of stations and altitude of reading with the associated label.
 
-## 7. TO DO LIST:  
+## 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
+In case you should find a bug inside this script and it appears to be blank, it should be in this form:  
+*maps_folder = ''  
+stationloc_folder = maps_folder + 'stations_loc.txt'  
+soundings_folder  = maps_folder + 'soundings\\'  
+url_folder        = 'file:///' + maps_folder + 'html\\'*  
+
+## 8. TO DO LIST:  
     - automatic data mining from wyoming university website (or other indication). This requires an automatic check for unavailable soundings that does not end in script's error stop.  
     - color gradient data representation for heights, temperatures humidity and other scalar quantities.  
     - vector representation of vectorial quantities such as wind, pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
