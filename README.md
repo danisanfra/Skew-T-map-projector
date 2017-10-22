@@ -1,4 +1,4 @@
-#  Skew-T-map-projector - v0.1
+#  Skew-T-map-projector - v0.2
  
 #	INDEX
 #	1- IDEA OF SCRIPT
