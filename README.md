@@ -23,7 +23,7 @@ folders_setup.py is the second script you need to use. It allows you to define t
 
 path_variables.py is a variable definition script, which is modified by folders_setup.py.  
 
-skew-T.py is the main script, that prints data from soundings on the map.  
+skew-T.py is the main script, that prints data from soundings on the map. 
 
 ## 2. IDEA OF SCRIPT  
 ## This program reads the latitude and ID number of stations from which soundings are usually available. They are reported in file stations_loc.txt in this folder.
@@ -37,7 +37,20 @@ Nested 'for' cycle (around line 60) comments with a '#' lines for which not all 
 
 Next 'for' cycle opens the txt soundings' files and saves data into multidimensional arrays (being at the moment just for geopotential height at 500 hPa).
 
-Last lines plot on a mercator projected map of Europe dots representing the location of stations and altitude of reading with the associated label.
+Last lines plot on a mercator projected map of Europe dots representing the location of stations and altitude of reading with the associated label.  
+
+## 3.MISSING PACKAGES INSTALLATION
+from urllib.request import urlopen - OK
+from bs4 import BeautifulSoup - OK
+from mpl_toolkits.basemap import Basemap
+import matplotlib.pyplot as plt - 2
+import numpy - 1
+import pylab - ?
+import os - 4
+(import scipy - 3)
+install pyproj - 5
+install pillow - 6
+install goes - ?
 
 ## 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
 In case you should find a bug inside this script and it appears to be blank, it should be in this form:  
