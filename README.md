@@ -5,10 +5,10 @@
 ##### 1. CONTENT OF FOLDER  
 ##### 2. IDEA OF SCRIPT  
 ##### 3. MISSING PACKAGES INSTALLATION  
-##### 5. SETTING FOLDER  
-##### 6. USE OF SCRIPT
-##### 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
-##### 8. TO DO LIST
+##### 4. SETTING FOLDER  
+##### 5. USE OF SCRIPT
+##### 6. IN CASE OF BUGS IN FOLDERS_SETUP.PY
+##### 7. TO DO LIST
 
 ## 1. CONTENT OF FOLDER  
 html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage.  
@@ -39,7 +39,7 @@ Next 'for' cycle opens the txt soundings' files and saves data into multidimensi
 
 Last lines plot on a mercator projected map of Europe dots representing the location of stations and altitude of reading with the associated label.  
 
-## 3.MISSING PACKAGES INSTALLATION
+## 3.MISSING PACKAGES INSTALLATION - lo avevo fatto bene ma la connessione internet salta.  
 from urllib.request import urlopen - OK
 from bs4 import BeautifulSoup - OK
 from mpl_toolkits.basemap import Basemap
