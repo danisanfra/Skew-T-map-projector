@@ -9,7 +9,7 @@ import os
 from path_variables import *
 plt.close()
 
-station_lat, station_lon, station_ID = pylab.loadtxt(stationloc_folder, unpack=True)
+station_lat, station_lon, station_ID = numpy.loadtxt(stationloc_folder, unpack=True)
 
 year  = '17'
 month = '10'
@@ -46,50 +46,76 @@ for stn in station_ID:
     for line in splitted[4:10]:
         f.write('#'+line+'\n')
     
-#     i = 4
     for line in splitted[10:-52]:
         if (line[0]!=' '):
                 break
-        elif (line[3] == 0 ):
-                break
+        elif (line[4] == ' '):
+            break
         else:
-            if (line[12] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[18] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[25] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[34] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[38] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[48] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[55] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[58] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[65] == ' '):
-                f.write('#'+line+'\n')
-            elif (line[72] == ' '):
-                f.write('#'+line+'\n')
+            f.write(line[0:7])
+                
+            if (line[13] == ' '):
+                f.write(line[7:9]+'-9999')
             else:
-                f.write(line+'\n')
-        
-
-        
-#         i+=1
-    
-#     for line in splitted[i:]:
-#         if (line[27:43]=='Station latitude'):
-#             station_lat = float(line[45:])
-#         if (line[26:43]=='Station longitude'):
-#             station_lon = float(line[45:])
-    
-    
+                f.write(line[7:14])
+                
+            if (line[18] == ' '):
+                f.write(line[14:16]+'-9999')
+            else:
+                f.write(line[14:21])
+                
+            if (line[25] == ' '):
+                f.write(line[21:23]+'-9999')
+            else:
+                f.write(line[21:28])
+                
+            if (line[34] == ' '):
+                f.write(line[28:30]+'-9999')
+            else:
+                f.write(line[28:35])
+                
+            if (line[38] == ' '):
+                f.write(line[35:37]+'-9999')
+            else:
+                f.write(line[35:42])
+                
+            if (line[48] == ' '):
+                f.write(line[42:44]+'-9999')
+            else:
+                f.write(line[42:49])
+            
+            if (line[55] == ' '):
+                f.write(line[49:52]+'-9999')
+            else:
+                f.write(line[49:56])
+                
+            if (line[58] == ' '):
+                f.write(line[56:58]+'-9999')
+            else:
+                f.write(line[56:63])
+                
+            if (line[65] == ' '):
+                f.write(line[63:65]+'-9999')
+            else:
+                f.write(line[63:70])
+                
+            if (line[72] == ' '):
+                f.write(line[70:72]+'-9999')
+            else:
+                f.write(line[70:])
+                
+            f.write('\n')
     f.close()
 
-geop_height = numpy.empty(len(station_ID))
+
+Pressure_level = 500.0
+
+geop_height = numpy.empty(len(station_ID));   stat_height = numpy.empty([len(station_ID),2])
+wind_dir    = numpy.empty(len(station_ID));   stat_wind   = numpy.empty([len(station_ID),2])
+wind_speed  = numpy.empty(len(station_ID))
+dryT        = numpy.empty(len(station_ID));   stat_drtemp = numpy.empty([len(station_ID),2])
+dewT        = numpy.empty(len(station_ID));   stat_wetemp = numpy.empty([len(station_ID),2])
+
 i = 0
 for stn in station_ID:
     if len(str(int(stn))) < 5:
@@ -101,39 +127,79 @@ for stn in station_ID:
     data_path = folder_path + Sounding_filename
 
     data = numpy.array(11)
-    data = pylab.loadtxt(data_path, unpack=True)
+    data = numpy.loadtxt(data_path, unpack=True)
     
-    geop_height[i] = data[1][data[0]==500.0]
+    stat_height[i] = station_lon[i], station_lat[i]
+    stat_wind[i]   = station_lon[i], station_lat[i]
+    stat_drtemp[i] = station_lon[i], station_lat[i]
+    stat_wetemp[i] = station_lon[i], station_lat[i]
+    
+    if (data[1][data[0] == Pressure_level] == -9999.):
+        geop_height    = numpy.delete(geop_height, i)
+        stat_height    = numpy.delete(stat_height, i, 0)
+    else:
+        geop_height[i] = data[1][data[0]==Pressure_level]
+    
+    if (data[6][data[0]==Pressure_level] == -9999. or data[7][data[0]==Pressure_level] == -9999.):
+        wind_dir       = numpy.delete(wind_dir, i)
+        wind_speed     = numpy.delete(wind_speed, i)
+        
+        stat_wind      = numpy.delete(stat_windir, i, 0)
+    else:
+        wind_dir[i]    = data[6][data[0]==Pressure_level] + 180
+        wind_speed[i]  = data[7][data[0]==Pressure_level]
+        
+    if (data[2][data[0]==Pressure_level] == -9999.):
+        dryT           = numpy.delete(dryT, i)
+        stat_drtemp    = numpy.delete(stat_drtemp, i, 0)
+    else:
+        dryT[i]        = data[2][data[0]==Pressure_level]
+    
+    if (data[3][data[0]==Pressure_level] == -9999.):
+        dewT           = numpy.delete(dewT, i)
+        stat_wetemp    = numpy.delete(stat_wetemp, i, 0)
+    else:
+        dewT[i]        = data[3][data[0]==Pressure_level]
+        
     i+=1
-    
-# wind_dir    = data[6][data[0]==500.0] + 180
-# wind_speed  = data[7][data[0]==500.0]
 
-# u10 = wind_speed*pylab.sin(pylab.deg2rad(wind_dir))
-# v10 = wind_speed*pylab.cos(pylab.deg2rad(wind_dir))
 
-map = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=None,projection='tmerc',lon_0=10,lat_0=55)
-map.shadedrelief()
+geop_height /= 1000 #m to km conversion factor
+wind_speed  *= 1.85 #knots to km/h conversion factor
+u10 = wind_speed*pylab.sin(pylab.deg2rad(wind_dir))
+v10 = wind_speed*pylab.cos(pylab.deg2rad(wind_dir))
 
-map.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1],fontsize=10)
-map.drawparallels(numpy.arange(-90,90,10), labels=[1,0,0,0], fontsize=10)
 
-x,y = map(station_lon, station_lat)
-points = numpy.meshgrid(y, x)
+fig, (mapP, mapT) = plt.subplots(1, 2)
+mapP = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=None,projection='tmerc',lon_0=10,lat_0=55, ax = mapP)
+mapT = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=None,projection='tmerc',lon_0=10,lat_0=55, ax = mapT)
 
-# map.barbs(x[points], y[points], u10[points], v10[points], pivot='middle', barbcolor='#333333')
-# map.barbs(x, y, u10, v10, pivot='middle', barbcolor='#333333', length=5)
-# map.quiver(x[points], y[points], u10[points], v10[points], speed[points], cmap=plt.cm.autumn)
-# map.quiver(x, y, u10, v10, wind_speed, cmap=plt.cm.autumn)
+mapP.shadedrelief()
+mapT.shadedrelief()
 
-labels = numpy.empty(len(geop_height))
+plt.suptitle('Plot at %d hPa - winds are in km/h' % Pressure_level)
 
-for i in range(len(geop_height)):
-    labels[i] = str(geop_height[i])
+mapP.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1], fontsize=10)
+mapP.drawparallels(numpy.arange(-90,90,10), labels=[1,0,0,0], fontsize=10)
+mapT.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1], fontsize=10)
+mapT.drawparallels(numpy.arange(-90,90,10), labels=[1,0,0,0], fontsize=10)
 
-for labels, xpt, ypt in zip(labels, x, y):
-    plt.text(xpt+10000, ypt+5000, labels, fontsize = 8)
 
-map.plot(x, y, 'bo', markersize=1)
+x,y = map((stat_height.T)[0], (stat_height.T)[1])
+PressurePlot  = mapP.scatter(x, y, c = geop_height, marker='o', cmap="bwr", edgecolor = '#333333', vmin = min(geop_height), vmax = max(geop_height))
+CPressurePlot = mapP.colorbar(PressurePlot, location="bottom", pad='5%', use_gridspec = True)
+CPressurePlot.set_label('Height [km]')
 
-plt.show()
+x,y = map((stat_wind.T)[0], (stat_wind.T)[1])
+WindPlot = mapP.barbs(x, y, u10, v10, pivot='tip', barbcolor='#333333', length=6)
+
+x,y = map((stat_drtemp.T)[0], (stat_drtemp.T)[1])
+dryTPlot  = mapT.scatter(x+26000,y, c = dryT, marker='s', cmap="coolwarm", edgecolor = '#333333', vmin = min(dewT), vmax = max(dryT))
+x,y = map((stat_wetemp.T)[0], (stat_wetemp.T)[1])
+dewTPlot  = mapT.scatter(x-26000,y, c = dewT, marker='s', cmap="coolwarm", edgecolor = '#333333', vmin = min(dewT), vmax = max(dryT))
+CdryTPlot = mapT.colorbar(dryTPlot, location="bottom", pad='5%', use_gridspec = True)
+CdryTPlot.set_label('T [Celsius] - (Wet bulb <- -> Dry bulb)')
+
+
+plt.tight_layout(rect = [0.05, 0., 1., 1.])
+fig.show()
