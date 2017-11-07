@@ -1,4 +1,3 @@
-
 #  Skew-T map-projector - v0.3
  
 ## INDEX  
@@ -35,4 +34,4 @@ In general ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` may be a good page 
 
 ## 3. TO DO LIST:  
     - vector representation of vectorial quantities such as pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
-    - define different functions and (eventually) create a library to decide which type of data display or to display all data at once on different/same plot.  
+    - define different functions and (eventually) create a library to decide which type of data display.
