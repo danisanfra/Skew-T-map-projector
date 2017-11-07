@@ -30,7 +30,7 @@ for stn in station_ID:
         stn = '0' + str(int(stn))
     else:
         stn = str(int(stn))
-    url = url_folder + stn + '-' + day + month + year + '-' + hour + '.html'
+    url = url_folder + '\\' + str(day)+str(month)+str(year)+'-'+str(hour) + '\\' + stn + '-' + day + month + year + '-' + hour + '.html'
 
     ## 1) URL of Sounding for already downloaded html file (above is path)
     try:
