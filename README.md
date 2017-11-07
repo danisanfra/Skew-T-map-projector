@@ -3,8 +3,7 @@
  
 ## INDEX  
 ##### 1. CONTENT OF FOLDER   
-##### 2. MISSING PACKAGES INSTALLATION  
-##### 3. SETTING FOLDER  
+##### 2. MISSING PACKAGES INSTALLATION   
 ##### 4. TO DO LIST  
 
 ## 1. CONTENT OF FOLDER  
@@ -34,6 +33,6 @@ map.py is the main script. After typing the correct date and time and the pressu
  
  In general ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` may be a good page to look for windows binaries.  
 
-## 8. TO DO LIST:  
+## 3. TO DO LIST:  
     - vector representation of vectorial quantities such as pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
     - define different functions and (eventually) create a library to decide which type of data display or to display all data at once on different/same plot.  
