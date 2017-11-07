@@ -7,8 +7,7 @@
 ##### 3. MISSING PACKAGES INSTALLATION  
 ##### 4. SETTING FOLDER  
 ##### 5. USE OF SCRIPT
-##### 6. IN CASE OF BUGS IN FOLDERS_SETUP.PY
-##### 7. TO DO LIST
+##### 6. TO DO LIST
 
 ## 1. CONTENT OF FOLDER  
 html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage.  
@@ -17,11 +16,7 @@ soundings/ contains the .txt data files to draw the map. It contains subfolders 
 
 README.md is this file.  
 
-setup.py is the first script you have to use, to install all the needed missing packages. You need to run it only once.  
-
-folders_setup.py is the second script you need to use. It allows you to define the path of *this* folder. You can run it once or whenever you need to change the location of *this* folder.  
-
-path_variables.py is a variable definition script, which is modified by folders_setup.py.  
+path_variables.py is a variable definition script, which is to be modified the first time you use the software and any time you change its path.  
 
 skew-T.py is the main script, that prints data from soundings on the map. 
 
@@ -52,19 +47,6 @@ install pyproj - 5
 install pillow - 6
 install goes - ?
 
-## 7. IN CASE OF BUGS IN FOLDERS_SETUP.PY
-In case you should find a bug inside this script and it appears to be blank, it should be in this form:  
-
-```
-maps_folder = ''  
-stationloc_folder = maps_folder + 'stations_loc.txt'  
-soundings_folder  = maps_folder + 'soundings\\'  
-url_folder        = 'file:///' + maps_folder + 'html\\'  
-```
-
 ## 8. TO DO LIST:  
-    - automatic data mining from wyoming university website (or other indication). This requires an automatic check for unavailable soundings that does not end in script's error stop.  
-    - color gradient data representation for heights, temperatures humidity and other scalar quantities.  
-    - vector representation of vectorial quantities such as wind, pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
-    - create installer to check for missing packages and to install them. It should also verify folder paths and create/change/update them.  
+    - vector representation of vectorial quantities such as pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
     - define different functions and (eventually) create a library to decide which type of data display or to display all data at once on different/same plot.  
