@@ -10,6 +10,7 @@ from path_variables import *
 plt.close()
 
 station_lat, station_lon, station_ID = numpy.loadtxt(stationloc_folder, unpack=True)
+lat, lon, ID = station_lat, station_lon, station_ID
 
 year  = '17'
 month = '10'
@@ -20,25 +21,33 @@ folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
+i = 0
 for stn in station_ID:
     if len(str(int(stn))) < 5:
         stn = '0' + str(int(stn))
     else:
         stn = str(int(stn))
-    url = url_folder + stn + '-' + day + month + year + '-' + hour + '.html'
+    # url = url_folder + stn + '-' + day + month + year + '-' + hour + '.html'
 
-## 1) Wyoming URL to download Sounding from / from already downloaded html file (above is path)
-# url = 'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
+    ## 1) Wyoming URL to download Sounding from / from already downloaded html file (above is path)
+    url = 'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
     content = urlopen(url).read()
 
-## 2) Remove the html tags
+    ## 2) Remove the html tags
     soup = BeautifulSoup(content)
     data_text = soup.get_text()
+        
+    if (data_text[1:4] == 'Can'):
+        lat = numpy.delete(lat, i)
+        lon = numpy.delete(lon, i)
+        IDs = numpy.delete(IDs, i)
+        i+=1
+        break
 
-## 3) Split the content by new line.
+    ## 3) Split the content by new line.
     splitted = data_text.split("\n",data_text.count("\n"))
 
-## 4) Write this splitted text to a .txt document
+    ## 4) Write this splitted text to a .txt document
     Sounding_filename = str(stn)+'.txt'
     data_path = folder_path + Sounding_filename
 
@@ -106,18 +115,19 @@ for stn in station_ID:
                 
             f.write('\n')
     f.close()
+    i+=1
 
 
 Pressure_level = 500.0
 
-geop_height = numpy.empty(len(station_ID));   stat_height = numpy.empty([len(station_ID),2])
-wind_dir    = numpy.empty(len(station_ID));   stat_wind   = numpy.empty([len(station_ID),2])
-wind_speed  = numpy.empty(len(station_ID))
-dryT        = numpy.empty(len(station_ID));   stat_drtemp = numpy.empty([len(station_ID),2])
-dewT        = numpy.empty(len(station_ID));   stat_wetemp = numpy.empty([len(station_ID),2])
+geop_height = numpy.empty(len(IDs));   stat_height = numpy.empty([len(IDs),2])
+wind_dir    = numpy.empty(len(IDs));   stat_wind   = numpy.empty([len(IDs),2])
+wind_speed  = numpy.empty(len(IDs))
+dryT        = numpy.empty(len(IDs));   stat_drtemp = numpy.empty([len(IDs),2])
+dewT        = numpy.empty(len(IDs));   stat_wetemp = numpy.empty([len(IDs),2])
 
 i = 0
-for stn in station_ID:
+for stn in IDs:
     if len(str(int(stn))) < 5:
         stn = '0' + str(int(stn))
     else:
@@ -129,10 +139,10 @@ for stn in station_ID:
     data = numpy.array(11)
     data = numpy.loadtxt(data_path, unpack=True)
     
-    stat_height[i] = station_lon[i], station_lat[i]
-    stat_wind[i]   = station_lon[i], station_lat[i]
-    stat_drtemp[i] = station_lon[i], station_lat[i]
-    stat_wetemp[i] = station_lon[i], station_lat[i]
+    stat_height[i] = lon[i], lat[i]
+    stat_wind[i]   = lon[i], lat[i]
+    stat_drtemp[i] = lon[i], lat[i]
+    stat_wetemp[i] = lon[i], lat[i]
     
     if (data[1][data[0] == Pressure_level] == -9999.):
         geop_height    = numpy.delete(geop_height, i)
@@ -143,7 +153,6 @@ for stn in station_ID:
     if (data[6][data[0]==Pressure_level] == -9999. or data[7][data[0]==Pressure_level] == -9999.):
         wind_dir       = numpy.delete(wind_dir, i)
         wind_speed     = numpy.delete(wind_speed, i)
-        
         stat_wind      = numpy.delete(stat_windir, i, 0)
     else:
         wind_dir[i]    = data[6][data[0]==Pressure_level] + 180
