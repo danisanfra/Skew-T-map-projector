@@ -31,7 +31,7 @@ map.py is the main script. After typing the correct date and time and the pressu
     - pillow: it's only suggested by basemap, but it is used for orographic maps.  
     - goes: you need to install it during basemap installation.  
  
- In general ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` may be a good page to look for windows binaries.  
+In general ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` may be a good page to look for windows binaries.  
 
 ## 3. TO DO LIST:  
     - vector representation of vectorial quantities such as pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  

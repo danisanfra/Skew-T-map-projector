@@ -43,7 +43,7 @@ for stn in IDs:
     data = numpy.loadtxt(data_path, unpack=True)
 
 	difference_in_pressure = numpy.absolute(data[0] - Pressure_level)
-	actual_pressure = data[0][difference_in_pressure <= 20]
+	actual_pressure = data[0][difference_in_pressure <= 5]
 	if (len(actual_pressure) > 1):
     	actual_pressure = actual_pressure[difference_in_pressure == min(difference_in_pressure)]
     
@@ -94,7 +94,7 @@ mapT = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=
 mapP.shadedrelief()
 mapT.shadedrelief()
 
-plt.suptitle('Plot at %d +- 20 hPa - winds are in km/h' % Pressure_level)
+plt.suptitle('Plot at %d +- 5 hPa - winds are in km/h' % Pressure_level)
 
 mapP.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1], fontsize=10)
 mapP.drawparallels(numpy.arange(-90,90,10), labels=[1,0,0,0], fontsize=10)
