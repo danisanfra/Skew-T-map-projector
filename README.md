@@ -23,17 +23,16 @@ data_downloader.py automatically downloads and converts html soundings' data and
 map.py is the main script. After typing the correct date and time and the pressure level you want to analyze, it plots a double map of Europe, showing height of radiosonde at given pressure, wind and temperature both for wet bulb and dry bulb.  
 
 ## 2.MISSING PACKAGES INSTALLATION - lo avevo fatto bene ma la connessione internet salta.  
-from urllib.request import urlopen - OK
-from bs4 import BeautifulSoup - OK
-from mpl_toolkits.basemap import Basemap
-import matplotlib.pyplot as plt - 2
-import numpy - 1
-import pylab - ?
-import os - 4
-(import scipy - 3)
-install pyproj - 5
-install pillow - 6
-install goes - ?
+    - urllib: needed for urlopen to open url paths both from local folder and from the internet  
+    - bs4: needed for BeautifulSoup, to remove the html tags before converting it to .txt file.  
+    - os: should be already installed by default.  
+    - numpy: needed for data extraction and analysis.  
+    - matplotlib: needed for plotting data.  
+    - basemap: needed for geographical maps. Follow instructions at ```https://matplotlib.org/basemap/users/installing.html```.  
+    - pillow: it's only suggested by basemap, but it is used for orographic maps.  
+    - goes: you need to install it during basemap installation.  
+ 
+ In general ```https://www.lfd.uci.edu/~gohlke/pythonlibs/``` may be a good page to look for windows binaries.  
 
 ## 8. TO DO LIST:  
     - vector representation of vectorial quantities such as pressure gradients or temperature gradients. This obviously requires a defined function for extracting gradients in a useful way.  
