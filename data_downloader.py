@@ -21,7 +21,7 @@ folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
-# runs through the known stations. If the analized station's dataset exists, it is converted into a txt file and saved. Empty columns are filled with a -9999 code, so that if some data is missing, it may be still possible to plot what is available. If pressure is unavailable, the whole line is deleted, since this plot is based on pressure levels. In case the dataset is unavailable, conversion is stopped and the corresponding station is deleted from auxiliary arrays lat, lon and IDs.
+# runs through the known stations. If the analyzed station's dataset exists, it is converted into a txt file and saved. Empty columns are filled with a -9999 code, so that if some data is missing, it may be still possible to plot what is available. If pressure is unavailable, the whole line is deleted, since this plot is based on pressure levels. In case the dataset is unavailable, conversion is stopped and the corresponding station is deleted from auxiliary arrays lat, lon and IDs.
 i = 0
 for stn in station_ID:
     if len(str(int(stn))) < 5:
