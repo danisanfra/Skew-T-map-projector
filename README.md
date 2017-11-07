@@ -2,39 +2,27 @@
 #  Skew-T map-projector - v0.3
  
 ## INDEX  
-##### 1. CONTENT OF FOLDER  
-##### 2. IDEA OF SCRIPT  
-##### 3. MISSING PACKAGES INSTALLATION  
-##### 4. SETTING FOLDER  
-##### 5. USE OF SCRIPT
-##### 6. TO DO LIST
+##### 1. CONTENT OF FOLDER   
+##### 2. MISSING PACKAGES INSTALLATION  
+##### 3. SETTING FOLDER  
+##### 4. TO DO LIST  
 
 ## 1. CONTENT OF FOLDER  
-html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage.  
+html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage. It contains a demo subfolder in the format '091017-00' meaning Oct 9th 2017 Z00, which is the format you should use to save your html pages.  
 
-soundings/ contains the .txt data files to draw the map. It contains subfolders in the format '091017-00' meaning Oct 9th 2017, Z00.  
+soundings/ contains the .txt data files to draw the map. It contains subfolders in the format '091017-00' as before. It contains some demo files to test the software and if the needed packages are correctly installed.  
 
 README.md is this file.  
 
-path_variables.py is a variable definition script, which is to be modified the first time you use the software and any time you change its path.  
+path_variables.py is a variable definition script, which is to be modified the first time you use the software and any time you change its path.  What you need to insert in the 'maps_folder' variable is the absolute path to the inside of your 'Skew-T-map-projector' folder.  
 
-skew-T.py is the main script, that prints data from soundings on the map. 
+data_manual.py is the script that allows you to convert your html files into .txt data, saved inside the 'soundings' subfolder. You have to pay attention to insert the correct date and time.
 
-## 2. IDEA OF SCRIPT  
-## This program reads the latitude and ID number of stations from which soundings are usually available. They are reported in file stations_loc.txt in this folder.
+data_downloader.py automatically downloads and converts html soundings' data and saves them into the 'soundings' subfolder. You have to insert the correct date and time as well.  
 
-Setting variables 'year', 'month', 'day' and 'hour' allows to select the soundings.
+map.py is the main script. After typing the correct date and time and the pressure level you want to analyze, it plots a double map of Europe, showing height of radiosonde at given pressure, wind and temperature both for wet bulb and dry bulb.  
 
-folder_path variable indicates the folder in which html pages are saved and from which the program converts the data to txt before reading them. At the moment data download is manual, planning to make it automatic in the next future. Path should be changed until the 'maps' folder, which contains this script.
-
-Next 'for' iteration reads inside station_ID array, to open the 'url' html file, convert it to .txt format and save it inside a file located in the 'soundings' subfolder. .txt formatted data are archived by date and time.
-Nested 'for' cycle (around line 60) comments with a '#' lines for which not all data are available in the columns. This isn't a very clever idea, I admit, but running the program all at once, I couldn't find anything more useful to get rid of extraction errors.
-
-Next 'for' cycle opens the txt soundings' files and saves data into multidimensional arrays (being at the moment just for geopotential height at 500 hPa).
-
-Last lines plot on a mercator projected map of Europe dots representing the location of stations and altitude of reading with the associated label.  
-
-## 3.MISSING PACKAGES INSTALLATION - lo avevo fatto bene ma la connessione internet salta.  
+## 2.MISSING PACKAGES INSTALLATION - lo avevo fatto bene ma la connessione internet salta.  
 from urllib.request import urlopen - OK
 from bs4 import BeautifulSoup - OK
 from mpl_toolkits.basemap import Basemap
