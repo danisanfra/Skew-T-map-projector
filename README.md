@@ -1,5 +1,5 @@
 
-#  Skew-T map-projector - v0.2
+#  Skew-T map-projector - v0.3
  
 ## INDEX  
 ##### 1. CONTENT OF FOLDER  
