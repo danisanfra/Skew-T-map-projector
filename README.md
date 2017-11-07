@@ -21,7 +21,7 @@ data_downloader.py automatically downloads and converts html soundings' data and
 
 map.py is the main script. After typing the correct date and time and the pressure level you want to analyze, it plots a double map of Europe, showing height of radiosonde at given pressure, wind and temperature both for wet bulb and dry bulb.  
 
-## 2.MISSING PACKAGES INSTALLATION - lo avevo fatto bene ma la connessione internet salta.  
+## 2.MISSING PACKAGES INSTALLATION  
     - urllib: needed for urlopen to open url paths both from local folder and from the internet  
     - bs4: needed for BeautifulSoup, to remove the html tags before converting it to .txt file.  
     - os: should be already installed by default.  
