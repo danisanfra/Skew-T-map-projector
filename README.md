@@ -4,7 +4,7 @@
 ## INDEX  
 ##### 1. CONTENT OF FOLDER   
 ##### 2. MISSING PACKAGES INSTALLATION   
-##### 4. TO DO LIST  
+##### 3. TO DO LIST  
 
 ## 1. CONTENT OF FOLDER  
 html/ contains the html files if you manually download them. They are parsed from the script to become .txt data files. If you use it, you can choose to use 'save html only' when saving the sounding's webpage. It contains a demo subfolder in the format '091017-00' meaning Oct 9th 2017 Z00, which is the format you should use to save your html pages.  
