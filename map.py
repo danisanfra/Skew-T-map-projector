@@ -44,37 +44,42 @@ for stn in IDs:
 
     data = numpy.array(11)
     data = numpy.loadtxt(data_path, unpack=True)
+
+	difference_in_pressure = numpy.absolute(data[0] - Pressure_level)
+	actual_pressure = data[0][difference_in_pressure <= 20]
+	if (len(actual_pressure) > 1):
+    	actual_pressure = actual_pressure[difference_in_pressure == min(difference_in_pressure)]
     
     stat_height[i] = lon[i], lat[i]
     stat_wind[i]   = lon[i], lat[i]
     stat_drtemp[i] = lon[i], lat[i]
     stat_wetemp[i] = lon[i], lat[i]
     
-    if (data[1][data[0] == Pressure_level] == -9999.):
+    if (data[1][data[0] == actual_pressure] == -9999.):
         geop_height    = numpy.delete(geop_height, i)
         stat_height    = numpy.delete(stat_height, i, 0)
     else:
-        geop_height[i] = data[1][data[0]==Pressure_level]
+        geop_height[i] = data[1][data[0]==actual_pressure]
     
-    if (data[6][data[0]==Pressure_level] == -9999. or data[7][data[0]==Pressure_level] == -9999.):
+    if (data[6][data[0]==actual_pressure] == -9999. or data[7][data[0]==actual_pressure] == -9999.):
         wind_dir       = numpy.delete(wind_dir, i)
         wind_speed     = numpy.delete(wind_speed, i)
         stat_wind      = numpy.delete(stat_wind, i, 0)
     else:
-        wind_dir[i]    = data[6][data[0]==Pressure_level] + 180
-        wind_speed[i]  = data[7][data[0]==Pressure_level]
+        wind_dir[i]    = data[6][data[0]==actual_pressure] + 180
+        wind_speed[i]  = data[7][data[0]==actual_pressure]
         
-    if (data[2][data[0]==Pressure_level] == -9999.):
+    if (data[2][data[0]==actual_pressure] == -9999.):
         dryT           = numpy.delete(dryT, i)
         stat_drtemp    = numpy.delete(stat_drtemp, i, 0)
     else:
-        dryT[i]        = data[2][data[0]==Pressure_level]
+        dryT[i]        = data[2][data[0]==actual_pressure]
     
-    if (data[3][data[0]==Pressure_level] == -9999.):
+    if (data[3][data[0]==actual_pressure] == -9999.):
         dewT           = numpy.delete(dewT, i)
         stat_wetemp    = numpy.delete(stat_wetemp, i, 0)
     else:
-        dewT[i]        = data[3][data[0]==Pressure_level]
+        dewT[i]        = data[3][data[0]==actual_pressure]
         
     i+=1
 
@@ -92,7 +97,7 @@ mapT = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=
 mapP.shadedrelief()
 mapT.shadedrelief()
 
-plt.suptitle('Plot at %d hPa - winds are in km/h' % Pressure_level)
+plt.suptitle('Plot at %d +- 20 hPa - winds are in km/h' % Pressure_level)
 
 mapP.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1], fontsize=10)
 mapP.drawparallels(numpy.arange(-90,90,10), labels=[1,0,0,0], fontsize=10)
