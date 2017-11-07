@@ -1,9 +1,6 @@
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import numpy
-import os
 
 from path_variables import *
 plt.close()
