@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import numpy
-import pylab
 import os
 
 from path_variables import *

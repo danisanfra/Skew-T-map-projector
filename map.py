@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import numpy
-import pylab
 import os
 
 from path_variables import *
@@ -82,8 +81,8 @@ for stn in IDs:
 
 geop_height /= 1000 #m to km conversion factor
 wind_speed  *= 1.85 #knots to km/h conversion factor
-u10 = wind_speed*pylab.sin(pylab.deg2rad(wind_dir))
-v10 = wind_speed*pylab.cos(pylab.deg2rad(wind_dir))
+u10 = wind_speed*numpy.sin(numpy.deg2rad(wind_dir))
+v10 = wind_speed*numpy.cos(numpy.deg2rad(wind_dir))
 
 
 fig, (mapP, mapT) = plt.subplots(1, 2)
