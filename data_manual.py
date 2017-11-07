@@ -1,12 +1,9 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from mpl_toolkits.basemap import Basemap
-import matplotlib.pyplot as plt
 import numpy
 import os
 
 from path_variables import *
-plt.close()
 
 station_lat, station_lon, station_ID = numpy.loadtxt(stationloc_folder, unpack=True)
 lat, lon, IDs = station_lat, station_lon, station_ID
