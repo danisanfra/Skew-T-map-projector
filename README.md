@@ -1,4 +1,4 @@
-#  Skew-T map-projector - v0.3
+#  Skew-T map-projector - v0.4
  
 ## INDEX  
 ##### 1. CONTENT OF FOLDER   
@@ -12,13 +12,13 @@ soundings/ contains the .txt data files to draw the map. It contains subfolders 
 
 README.md is this file.  
 
-path_variables.py is a variable definition script, which is to be modified the first time you use the software and any time you change its path.  What you need to insert in the 'maps_folder' variable is the absolute path to the inside of your 'Skew-T-map-projector' folder.  
+path_variables.py is a variable definition script, containing all the needed relative paths to the 'Skew-T-map-projector' folder and of folders inside it.  
 
 data_manual.py is the script that allows you to convert your html files into .txt data, saved inside the 'soundings' subfolder. You have to pay attention to insert the correct date and time.
 
 data_downloader.py automatically downloads and converts html soundings' data and saves them into the 'soundings' subfolder. You have to insert the correct date and time as well.  
 
-map.py is the main script. After typing the correct date and time and the pressure level you want to analyze, it plots a double map of Europe, showing height of radiosonde at given pressure, wind and temperature both for wet bulb and dry bulb.  
+map.py is the main script. After typing the correct date and time, the pressure level you want to analyze and the uncertainty for non standard levels, it plots a double map of Europe, showing height of radiosonde at given pressure, wind and temperature both for wet bulb and dry bulb.  
 
 ## 2.MISSING PACKAGES INSTALLATION  
     - urllib: needed for urlopen to open url paths both from local folder and from the internet  
