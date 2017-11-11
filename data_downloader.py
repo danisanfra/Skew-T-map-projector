@@ -12,14 +12,14 @@ lat, lon, IDs = station_lat, station_lon, station_ID
 ## INSERT DATA BELOW
 year  = '17'
 month = '11'
-day   = '06'
+day   = '10'
 hour  = '12' #either 12 or 00
 ## INSERT DATA ABOVE
 
 # checks for existence of folder for the given date and time. If it does not exist, it is created, otherwise it is updated running the script.
 folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\'
 if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
+    os.mkdir(folder_path)
 
 # runs through the known stations. If the analyzed station's dataset exists, it is converted into a txt file and saved. Empty columns are filled with a -9999 code, so that if some data is missing, it may be still possible to plot what is available. If pressure is unavailable, the whole line is deleted, since this plot is based on pressure levels. In case the dataset is unavailable, conversion is stopped and the corresponding station is deleted from auxiliary arrays lat, lon and IDs.
 i = 0
@@ -33,7 +33,7 @@ for stn in station_ID:
     url = 'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST&YEAR='+year+'&MONTH='+month+'&FROM='+day+hour+'&TO='+day+hour+'&STNM='+stn
     content = urlopen(url).read()
 
-    # 2) Remove the html tags.
+    # 2) Remove the html tags. Will give a huge error message for a missing parser, but it works.
     soup = BeautifulSoup(content)
     data_text = soup.get_text()
 
@@ -91,7 +91,7 @@ for stn in station_ID:
                     f.write(line[42:49])
                 
                 if (line[55] == ' '):
-                    f.write(line[49:52]+'-9999')	# wind speed [knots] is missing.
+                    f.write(line[49:51]+'-9999')	# wind speed [knots] is missing.
                 else:
                     f.write(line[49:56])
                     

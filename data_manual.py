@@ -19,7 +19,7 @@ hour  = '00' #either 12 or 00
 # checks for existence of folder for the given date and time. If it does not exist, it is created, otherwise it is updated running the script.
 folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\'
 if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
+    os.mkdir(folder_path)
 
 # runs through the known stations. If the analyzed station's html file exists, it is converted into a txt file. Empty columns are filled with a -9999 code, so that if some data is missing, it may be still possible to plot what is available. If pressure is unavailable, the whole line is deleted, since this plot is based on pressure levels. In case the html file does not exist, conversion is stopped and the corresponding station is deleted from auxiliary arrays lat, lon and IDs.
 i = 0
@@ -41,7 +41,7 @@ for stn in station_ID:
         generate_data = False
         
     if generate_data == True:
-        # 2) Remove the html tags.
+        # 2) Remove the html tags. Will give a huge error message for a missing parser, but it works.
         soup = BeautifulSoup(content)
         data_text = soup.get_text()
         
@@ -97,7 +97,7 @@ for stn in station_ID:
                     f.write(line[42:49])
                 
                 if (line[55] == ' '):
-                    f.write(line[49:52]+'-9999')	# wind speed [knots] is missing.
+                    f.write(line[49:51]+'-9999')	# wind speed [knots] is missing.
                 else:
                     f.write(line[49:56])
                     

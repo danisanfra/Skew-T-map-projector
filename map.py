@@ -6,24 +6,25 @@ from path_variables import *
 # closes previously opened plot.
 plt.close()
 
+## INSERT DATA BELOW
+year  = '17'
+month = '11'
+day   = '10'
+hour  = '00' #either 12 or 00
+## INSERT DATA ABOVE
+
+folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\'
+
 # loads available stations' datasets from folder
 stations_filename  = 'availables.txt'
 availstations_path = folder_path + stations_filename
 
 lat, lon, IDs = numpy.loadtxt(availstations_path, unpack=True)
 
-## INSERT DATA BELOW
-year  = '17'
-month = '10'
-day   = '09'
-hour  = '00' #either 12 or 00
-## INSERT DATA ABOVE
-
-folder_path = soundings_folder + str(day)+str(month)+str(year)+'-'+str(hour)+'\\'
 
 ## INSERT DATA BELOW
-# standard levels should be available for all stations. Other levels are rounded to +- 5 hPa.
-Pressure_level = 850.0
+# standard levels should be available for all stations. Other levels are rounded to +- 5 hPa. (for some stations this does not work).
+Pressure_level = 1000.0
 ## INSERT DATA ABOVE
 
 # geop_height saves the height for the given pressure. stat_height allows datasets with missing values to be plotted.
@@ -36,6 +37,7 @@ dryT        = numpy.empty(len(IDs));   stat_drtemp = numpy.empty([len(IDs),2])
 dewT        = numpy.empty(len(IDs));   stat_wetemp = numpy.empty([len(IDs),2])
 
 i = 0
+deleted_h = 0; deleted_w = 0; deleted_dT = 0; deleted_wT = 0;
 for stn in IDs:
 	# IDs is an array of integers, so zeros at beginning of ID are deleted. This inserts them again.
     if len(str(int(stn))) < 5:
@@ -51,47 +53,61 @@ for stn in IDs:
     data = numpy.loadtxt(data_path, unpack=True)
 
 	# evaluates the array of differences between measured pressures and the given Pressure_level. actual_pressure saves the values for which difference_in_pressure is below 5 hPa, leaving then the one with the lowest difference.
+	uncertainty = 5 ## UNCERTAINTY USED ON PRESSURE [hPa]
+	
 	difference_in_pressure = numpy.absolute(data[0] - Pressure_level)
-	actual_pressure = data[0][difference_in_pressure <= 5]
+	actual_pressure = data[0][difference_in_pressure <= uncertainty]
+	difference_in_pressure = difference_in_pressure[difference_in_pressure <= uncertainty]
 	if (len(actual_pressure) > 1):
-    	actual_pressure = actual_pressure[difference_in_pressure == min(difference_in_pressure)]
+	    actual_pressure = actual_pressure[difference_in_pressure == min(difference_in_pressure)]
+    # in case some points differ for the same amount and program couldn't decide which one to select. The highest is taken so that the relative difference in height (should) be smaller.
+    if (len(actual_pressure) > 1):
+        actual_pressure = max(actual_pressure)
 
     # stat_* arrays are filled with lon, lat data.
-    stat_height[i] = lon[i], lat[i]
-    stat_wind[i]   = lon[i], lat[i]
-    stat_drtemp[i] = lon[i], lat[i]
-    stat_wetemp[i] = lon[i], lat[i]
+    stat_height[i-deleted_h][0]  = lon[i];     stat_height[i-deleted_h][1]  = lat[i]
+    stat_wind[i-deleted_w][0]    = lon[i];     stat_wind[i-deleted_w][1]    = lat[i]
+    stat_drtemp[i-deleted_dT][0] = lon[i];     stat_drtemp[i-deleted_dT][1] = lat[i]
+    stat_wetemp[i-deleted_wT][0] = lon[i];     stat_wetemp[i-deleted_wT][1] = lat[i]
 
     # missing values are deleted from corresponding array.
     # height is missing.
-    if (data[1][data[0] == actual_pressure] == -9999.):
-        geop_height    = numpy.delete(geop_height, i)
-        stat_height    = numpy.delete(stat_height, i, 0)
+    if (data[1][data[0] == actual_pressure] < -1000):
+        geop_height    = numpy.delete(geop_height, i-deleted_h)
+        stat_height    = numpy.delete(stat_height, i-deleted_h, 0)
+        deleted_h += 1
     else:
-        geop_height[i] = data[1][data[0]==actual_pressure]
+        geop_height[i-deleted_h] = data[1][data[0]==actual_pressure]
+        stat_height[i-deleted_h] = numpy.array([lon[i], lat[i]])
 
     # wind data are missing.
-    if (data[6][data[0]==actual_pressure] == -9999. or data[7][data[0]==actual_pressure] == -9999.):
-        wind_dir       = numpy.delete(wind_dir, i)
-        wind_speed     = numpy.delete(wind_speed, i)
-        stat_wind      = numpy.delete(stat_wind, i, 0)
+    if (data[6][data[0]==actual_pressure] < -1000 or data[7][data[0]==actual_pressure] < -1000):
+        wind_dir       = numpy.delete(wind_dir, i-deleted_w)
+        wind_speed     = numpy.delete(wind_speed, i-deleted_w)
+        stat_wind      = numpy.delete(stat_wind, i-deleted_w, 0)
+        deleted_w += 1
     else:
-        wind_dir[i]    = data[6][data[0]==actual_pressure] + 180
-        wind_speed[i]  = data[7][data[0]==actual_pressure]
+        wind_dir[i-deleted_w]    = data[6][data[0]==actual_pressure] + 180
+        wind_speed[i-deleted_w]  = data[7][data[0]==actual_pressure]
+        stat_wind[i-deleted_w]   = numpy.array([lon[i], lat[i]])
 
 	# dry bulb temperature data is missing.
-    if (data[2][data[0]==actual_pressure] == -9999.):
-        dryT           = numpy.delete(dryT, i)
-        stat_drtemp    = numpy.delete(stat_drtemp, i, 0)
+    if (data[2][data[0]==actual_pressure] < -1000):
+        dryT           = numpy.delete(dryT, i-deleted_dT)
+        stat_drtemp    = numpy.delete(stat_drtemp, i-deleted_dT, 0)
+        deleted_dT += 1
     else:
-        dryT[i]        = data[2][data[0]==actual_pressure]
+        dryT[i-deleted_dT]        = data[2][data[0]==actual_pressure]
+        stat_drtemp[i-deleted_dT] = numpy.array([lon[i], lat[i]])
 
     # wet bulb temperature data is missing.
-    if (data[3][data[0]==actual_pressure] == -9999.):
-        dewT           = numpy.delete(dewT, i)
-        stat_wetemp    = numpy.delete(stat_wetemp, i, 0)
+    if (data[3][data[0]==actual_pressure] < -1000):
+        dewT           = numpy.delete(dewT, i-deleted_wT)
+        stat_wetemp    = numpy.delete(stat_wetemp, i-deleted_wT, 0)
+        deleted_wT += 1
     else:
-        dewT[i]        = data[3][data[0]==actual_pressure]
+        dewT[i-deleted_wT]        = data[3][data[0]==actual_pressure]
+        stat_wetemp[i-deleted_wT] = numpy.array([lon[i], lat[i]])
         
     i+=1
 
@@ -111,7 +127,7 @@ mapT = Basemap(llcrnrlon=-10.,llcrnrlat=32,urcrnrlon=40,urcrnrlat=64,resolution=
 mapP.shadedrelief()
 mapT.shadedrelief()
 
-plt.suptitle('Plot at %d +- 5 hPa - winds are in km/h' % Pressure_level)
+plt.suptitle('Plot at %d +- %d hPa - winds are in km/h' % (Pressure_level, uncertainty))
 
 # draw parallel and meridians on maps.
 mapP.drawmeridians(numpy.arange(0,360,10), labels=[0,0,0,1], fontsize=10)
